@@ -29,7 +29,7 @@ export const api = { async getDocuments(): Promise<Document[]> {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content }),
     });
-    if (!response.ok) throw new Error('Erro ao adicionar comentário');
+    if (!response.ok) throw new Error('Erro ao adicionar comentário.');
     return response.json();
   },
 

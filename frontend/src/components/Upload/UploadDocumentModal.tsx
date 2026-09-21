@@ -18,7 +18,7 @@ export const UploadDocumentModal: React.FC<UploadProps> = ({ isOpen, onClose, on
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!file || !title) return;
-
+    
     setLoading(true);
     try {
       const formData = new FormData();
