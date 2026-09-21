@@ -1,18 +1,22 @@
 import React from 'react';
-import type { Comment } from '../../../types/document_types';
+import styles from './CommentItem.module.css';
 
 interface CommentItemProps {
-  comment: Comment;
+  text: string;
+  createdAt: string;
 }
 
-export const CommentItem: React.FC<CommentItemProps> = ({ comment }) => {
+export const CommentItem: React.FC<CommentItemProps> = ({ text, createdAt }) => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', fontSize: '13px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span style={{ fontWeight: 600, color: '#111827' }}>Usuário</span>
-        <span style={{ fontSize: '11px', color: '#9ca3af' }}>{comment.createdAt}</span>
+    <div className={styles.commentItem}>
+      <div className={styles.avatar}>U</div>
+      <div className={styles.content}>
+        <div className={styles.header}>
+          <span className={styles.author}>Utilizador</span>
+          <span className={styles.date}>{new Date(createdAt).toLocaleString()}</span>
+        </div>
+        <p className={styles.text}>{text}</p>
       </div>
-      <p style={{ color: '#4b5563', margin: 0 }}>{comment.text}</p>
     </div>
   );
 };

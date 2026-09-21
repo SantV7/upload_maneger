@@ -1,0 +1,39 @@
+.commentItem {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e0e7ff;
+  color: #3730a3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 12px;
+}
+.content {
+  flex: 1;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.author {
+  font-weight: 600;
+  font-size: 13px;
+  color: #111827;
+}
+.date {
+  font-size: 11px;
+  color: #9ca3af;
+}
+.text {
+  font-size: 13px;
+  color: #4b5563;
+}

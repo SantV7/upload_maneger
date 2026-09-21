@@ -1,23 +1,19 @@
 import React from 'react';
-import { FiEye, FiDownload, FiMoreVertical } from 'react-icons/fi';
+import { Button } from '../../UI/Button/Button';
+import styles from './DocumentActions.module.css';
 
 interface DocumentActionsProps {
-  onView?: () => void;
-  onDownload?: () => void;
+  onDownload: () => void;
+  onDelete?: () => void;
 }
 
-export const DocumentActions: React.FC<DocumentActionsProps> = ({ onView, onDownload }) => {
+export const DocumentActions: React.FC<DocumentActionsProps> = ({ onDownload, onDelete }) => {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-end' }}>
-      <button onClick={onView} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6b7280' }} title="Visualizar">
-        <FiEye size={16} />
-      </button>
-      <button onClick={onDownload} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6b7280' }} title="Download">
-        <FiDownload size={16} />
-      </button>
-      <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6b7280' }}>
-        <FiMoreVertical size={16} />
-      </button>
+    <div className={styles.actions}>
+      <Button variant="primary" onClick={onDownload}>Download</Button>
+      {onDelete && (
+        <Button variant="secondary" onClick={onDelete}>Excluir</Button>
+      )}
     </div>
   );
 };

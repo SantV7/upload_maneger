@@ -1,0 +1,13 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+.empty {
+  font-size: 13px;
+  color: #9ca3af;
+  text-align: center;
+  padding: 12px;
+}

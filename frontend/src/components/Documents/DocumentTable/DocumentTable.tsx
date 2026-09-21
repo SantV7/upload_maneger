@@ -1,30 +1,31 @@
 import React from 'react';
 import type { Document } from '../../../types/document_types';
 import { DocumentRow } from '../DocumentRow/DocumentRow';
+import styles from './DocumentTable.module.css';
 
 interface DocumentTableProps {
   documents: Document[];
   onSelectDocument: (doc: Document) => void;
+  selectedId?: string;
 }
 
-export const DocumentTable: React.FC<DocumentTableProps> = ({ documents, onSelectDocument }) => {
+export const DocumentTable: React.FC<DocumentTableProps> = ({ documents, onSelectDocument, selectedId }) => {
   return (
-    <div style={{ backgroundColor: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '8px', overflowX: 'auto' }}>
-      <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '14px' }}>
-        <thead>
-          <tr style={{ borderBottom: '1px solid #e5e7eb', color: '#6b7280', backgroundColor: '#f9fafb' }}>
-            <th style={{ padding: '12px 16px', fontWeight: 600 }}>Documento</th>
-            <th style={{ padding: '12px 16px', fontWeight: 600 }}>Descrição</th>
-            <th style={{ padding: '12px 16px', fontWeight: 600 }}>Enviado em</th>
-            <th style={{ padding: '12px 16px', fontWeight: 600, textAlign: 'right' }}>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {documents.map((doc) => (
-            <DocumentRow key={doc.id} document={doc} onSelect={onSelectDocument} />
-          ))}
-        </tbody>
-      </table>
+    <div className={styles.table}>
+      <div className={styles.header}>
+        <span>Nome do Documento</span>
+        <span>Data</span>
+      </div>
+      <div className={styles.body}>
+        {documents.map((doc) => (
+          <DocumentRow 
+            key={doc.id} 
+            document={doc} 
+            isSelected={doc.id === selectedId} 
+            onSelect={onSelectDocument} 
+          />
+        ))}
+      </div>
     </div>
   );
 };

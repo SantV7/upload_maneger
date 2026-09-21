@@ -1,18 +1,24 @@
 import React from 'react';
-import type { Comment } from '../../../types/document_types';
+import styles from './CommentList.module.css';
 import { CommentItem } from '../CommenttItem/CommentItem';
 
-interface CommentListProps {
-  comments?: Comment[];
+interface Comment {
+  id: string;
+  text: string;
+  createdAt: string;
 }
 
-export const CommentList: React.FC<CommentListProps> = ({ comments = [] }) => {
+interface CommentListProps {
+  comments: Comment[];
+}
+
+export const CommentList: React.FC<CommentListProps> = ({ comments }) => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    <div className={styles.list}>
       {comments.length === 0 ? (
-        <p style={{ fontSize: '12px', color: '#9ca3af', margin: 0 }}>Nenhum comentário ainda.</p>
+        <p className={styles.empty}>Nenhum comentário ainda.</p>
       ) : (
-        comments.map((c) => <CommentItem key={c.id} comment={c} />)
+        comments.map((c) => <CommentItem key={c.id} text={c.text} createdAt={c.createdAt} />)
       )}
     </div>
   );

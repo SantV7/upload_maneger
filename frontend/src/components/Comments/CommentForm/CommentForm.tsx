@@ -1,33 +1,31 @@
 import React, { useState } from 'react';
-import { FiSend } from 'react-icons/fi';
+import { Button } from '../../UI/Button/Button';
+import styles from './CommnetForm.module.css';
 
 interface CommentFormProps {
-  documentId: string;
-  onAddComment: (text: string) => void;
+  onSubmitComment: (content: string) => void;
 }
 
-export const CommentForm: React.FC<CommentFormProps> = ({ onAddComment }) => {
-  const [text, setText] = useState('');
+export const CommentForm: React.FC<CommentFormProps> = ({ onSubmitComment }) => {
+  const [content, setContent] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!text.trim()) return;
-    onAddComment(text);
-    setText('');
+    if (!content.trim()) return;
+    onSubmitComment(content);
+    setContent('');
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
-      <input
-        type="text"
-        placeholder="Adicione um comentário..."
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        style={{ flex: 1, padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px', fontSize: '13px', outline: 'none' }}
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <input 
+        type="text" 
+        placeholder="Adicione um comentário..." 
+        value={content} 
+        onChange={(e) => setContent(e.target.value)}
+        className={styles.input}
       />
-      <button type="submit" style={{ padding: '8px 12px', backgroundColor: '#2563eb', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
-        <FiSend size={14} />
-      </button>
+      <Button variant="primary" type="submit">Enviar</Button>
     </form>
   );
 };
