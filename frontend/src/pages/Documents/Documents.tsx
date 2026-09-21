@@ -13,6 +13,7 @@ export const DocumentsPage: React.FC = () => {
   const [documents, setDocuments] = useState<Document[]>([]);
   const [selectedDoc, setSelectedDoc] = useState<Document | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'upload' | 'documents'>('documents');
 
   const loadDocuments = async () => {
     try {
@@ -51,7 +52,12 @@ export const DocumentsPage: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <Sidebar onOpenUpload={() => setIsModalOpen(true)} />
+      <Sidebar 
+        onOpenUpload={() => setIsModalOpen(true)} 
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        totalDocuments={documents.length}
+      />
       
       <main className={styles.main}>
         <header className={styles.header}>

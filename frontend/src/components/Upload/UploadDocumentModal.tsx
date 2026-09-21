@@ -31,8 +31,9 @@ export const UploadDocumentModal: React.FC<UploadProps> = ({ isOpen, onClose, on
       setTitle('');
       setFile(null);
     } catch (error) {
-      console.error(error);
+        console.error(error);
     } finally {
+      setTitle('')
       setLoading(false);
     }
   };
@@ -48,7 +49,7 @@ export const UploadDocumentModal: React.FC<UploadProps> = ({ isOpen, onClose, on
         />
         <input 
           type="file" 
-          onChange={(e) => setFile(e.target.files?.[0] || null)} 
+          onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
         />
         <Button variant="primary" type="submit" disabled={loading}>
           {loading ? 'A enviar...' : 'Enviar'}
