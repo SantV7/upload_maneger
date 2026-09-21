@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { prisma } from "../../../prisma/usePrisma.ts";
 
-export const anlizyDoc = async (req: Request, res: Response) => {
+export const authAnalizyDoc = async (req: Request, res: Response) => {
     try {
         const documents = await prisma.document.findMany();
         return res.status(200).json(documents);
@@ -10,9 +10,10 @@ export const anlizyDoc = async (req: Request, res: Response) => {
     }
 };
 
-export const anlizyExclusiveDoc = async (req: Request, res: Response) => {
+export const authAnalizyExclusiveDoc = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
+
         const document = await prisma.document.findUnique({
             where: { id: String(id) }
         });
@@ -27,9 +28,10 @@ export const anlizyExclusiveDoc = async (req: Request, res: Response) => {
     }
 };
 
-export const sendDoc = async (req: Request, res: Response) => {
+export const authSendDoc = async (req: Request, res: Response) => {
     try {
         const { title, description } = req.body;
+        
         const file = req.file;
 
         if (!file) {
@@ -51,7 +53,7 @@ export const sendDoc = async (req: Request, res: Response) => {
     }
 };
 
-export const deleteDoc = async (req: Request, res: Response) => {
+export const authDeleteDoc = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         

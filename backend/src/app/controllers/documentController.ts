@@ -5,6 +5,7 @@ import { prisma } from "../../../prisma/usePrisma.ts";
 export const analizyDoc = async (req: Request, res: Response) => {
     try {
         const documents = await prisma.document.findMany();
+        
         return res.status(200).json(documents);
     } catch (error) {
         return res.status(500).json({ error: "Erro ao listar documentos" });
@@ -14,6 +15,7 @@ export const analizyDoc = async (req: Request, res: Response) => {
 export const analizyExclusiveDoc = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
+
         const document = await prisma.document.findUnique({
             where: { id: String(id) }
         });
