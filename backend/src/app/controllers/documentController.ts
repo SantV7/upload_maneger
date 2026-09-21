@@ -1,7 +1,6 @@
 import type { Request, Response } from "express";
 import { prisma } from "../../../prisma/usePrisma.ts";
 
-
 export const analizyDoc = async (req: Request, res: Response) => {
     try {
         const documents = await prisma.document.findMany();
