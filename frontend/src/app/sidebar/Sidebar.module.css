@@ -1,6 +1,6 @@
 .sidebar {
   width: 260px;
-  background-image: linear-gradient(135deg, rgb(26, 21, 32), rgb(41, 11, 70));
+  background-image: linear-gradient(135deg, rgb(26, 21, 32), rgb(67, 32, 100));
   color: #94a3b8;
   display: flex;
   flex-direction: column;
@@ -89,4 +89,16 @@
   font-size: 12px;
   padding: 2px 8px;
   border-radius: 12px;
+}
+
+.totalBadge {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 12px;
 }
