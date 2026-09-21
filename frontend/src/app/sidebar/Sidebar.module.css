@@ -1,52 +1,92 @@
 .sidebar {
   width: 260px;
-  background: #ffffff;
-  border-right: 1px solid #e5e7eb;
+  background-image: linear-gradient(135deg, rgb(26, 21, 32), rgb(41, 11, 70));
+  color: #94a3b8;
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  height: 94vh;
+  padding: 24px 16px;
+  height: 100vh;
+  box-sizing: border-box;
+  border-right: 1px solid #334155;
 }
 
-.logo h2 {
-  font-size: 20px;
-  color: #1e3a8a;
-  margin-bottom: 30px;
+.logo_icon {
+  border-radius: 10px;
+  margin-left: 6px;
+  margin-bottom: -3px;
+}
+
+.logoIcon {
+  background: #3b82f6;
+  color: #ffffff;
+  padding: 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo h1 {
+  font-size: 18px;
+  color: #ffffff;
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.logo span {
+  font-size: 11px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.actionTop {
+  margin-top: 5px;
+  margin-bottom: 18px;
+  padding: 0 4px;
 }
 
 .nav {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  flex: 1;
+  gap: 12px;
 }
 
-.nav a {
+.navItem {
   display: flex;
-  justify-content: space-evenly;
   align-items: center;
+  gap: 12px;
+  width: 100%;
   padding: 10px 12px;
-  border-radius: 4px;
-  color: #0a111b;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  color: #cbd5e1;
   text-decoration: none;
+  font-size: 14px;
   font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
 }
 
-.nav a.active {
-  transition: ease 0.2s;
-  background: #eff6ff;
-  border-right: 4px solid transparent;
-  border-bottom: 5px solid transparent;
-  color: #0f0b20;
+.navItem:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
 }
 
-.nav a.active:hover {
-  background-color: rgba(64, 24, 117, 0.109);
-  border-radius: 7px;
-  border-right: 4px solid rgba(154, 98, 239, 0.333);
-  border-bottom: 5px solid rgba(123, 68, 206, 0.400);
+.navItem.active {
+  background: #3b82f6;
+  color: #ffffff;
+  font-weight: 600;
 }
 
-.action {
-  margin-top: auto;
+.badge {
+  margin-left: auto;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 12px;
 }

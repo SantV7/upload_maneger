@@ -1,29 +1,65 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from '../../components/UI/Button/Button';
 import styles from './Sidebar.module.css';
-import { File, FileText, DiamondPlus } from 'lucide-react';
+import { LayoutDashboard, ShipCargo, UploadCloud, FolderOpen, DiamondPlus } from 'lucide-react';
 
 interface SidebarProps {
   onOpenUpload: () => void;
+  activeTab: 'dashboard' | 'upload' | 'documents';
+  setActiveTab: (tab: 'dashboard' | 'upload' | 'documents') => void;
+  totalDocuments: number;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ onOpenUpload }) => {
-  const [ docIcon, setDocIcon ] = useState<boolean>(false);
-
+export const Sidebar: React.FC<SidebarProps> = ({ 
+  onOpenUpload, 
+  activeTab, 
+  setActiveTab, 
+  totalDocuments 
+}) => {
   return (
     <aside className={styles.sidebar}>
       <div className={styles.logo}>
-        <h1>Your</h1>
-        <h2>DocumentFlow</h2>
+        <div>
+          <h1>Your <ShipCargo className={styles.logo_icon} size={24}/></h1>
+          <span>DocumentFlow</span>
+        </div>
       </div>
-      <hr />
+
+      <div className={styles.actionTop}>
+        <Button variant="primary" onClick={onOpenUpload}>
+          <DiamondPlus size={18} /> Novo documento
+        </Button>
+      </div>
+      
       <nav className={styles.nav}>
-        <a href="documents" onMouseEnter={() => setDocIcon(true)} 
-  onMouseLeave={() => setDocIcon(false)}  className={styles.active}>Documentos {docIcon ? <FileText color='rgb(73, 73, 251)' size={23} /> : <File color='rgb(147, 147, 252)' size={23}/>}</a>
+        <button 
+          onClick={() => setActiveTab('dashboard')}
+          className={`${styles.navItem} ${activeTab === 'dashboard' ? styles.active : ''}`}
+        >
+          <LayoutDashboard size={18} />
+          <span>Painel</span>
+        </button>
+
+        <button 
+          onClick={() => {
+            setActiveTab('upload');
+            onOpenUpload();
+          }}
+          className={`${styles.navItem} ${activeTab === 'upload' ? styles.active : ''}`}
+        >
+          <UploadCloud size={18} />
+          <span>Enviar Documento</span>
+        </button>
+
+        <button 
+          onClick={() => setActiveTab('documents')}
+          className={`${styles.navItem} ${activeTab === 'documents' ? styles.active : ''}`}
+        >
+          <FolderOpen size={18} />
+          <span>Documentos</span>
+          <span className={styles.badge}>{totalDocuments}</span>
+        </button>
       </nav>
-      <div className={styles.action}>
-        <Button variant="primary" onClick={onOpenUpload}><DiamondPlus /> Novo documento</Button>
-      </div>
     </aside>
   );
 };
