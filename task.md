@@ -1,9 +1,25 @@
 # Task List & Roadmap
 
-## Funcionalidades da API (Backend)
+## Setup Inicial
+- [x] Inicialização do repositório Git
+- [x] Estruturação das pastas `frontend` e `backend`
+- [x] Criação do `.gitignore` na raiz
+- [x] Documentação base (`README.md`, `task.md`)
 
-- [x] POST /documents: Faz o upload do arquivo (PDF, JPG ou PNG), guarda localmente e salva os metadados no banco.
-- [x] GET /documents: Lista todos os documentos cadastrados (com título, data de upload e link para download).
-- [x] GET /documents/:id: Mostra os detalhes de um documento específico junto com o seu histórico de comentários.
-- [x] POST /documents/:id/comments: Adiciona um novo comentário vinculado a um documento específico.
-- [x] GET /uploads/... (ou rota estática): Serve os arquivos salvos localmente para que possam ser visualizados ou baixados.
+## Backend (Concluído)
+- [x] Inicialização do projeto Node.js
+- [x] Instalação e configuração do Express com TypeScript
+- [x] Configuração do Prisma ORM e PostgreSQL
+- [x] Implementação do módulo de documentos (upload local via Multer, metadados e listagem)
+- [x] Implementação do módulo de comentários (criação, listagem e relação em cascata)
+- [x] `POST /documents`: Upload de arquivos (PDF, JPG ou PNG), armazenamento local e persistência no banco
+- [x] `GET /documents`: Listagem de todos os documentos cadastrados
+- [x] `GET /documents/:id`: Detalhes de um documento específico e seu histórico de comentários
+- [x] `POST /documents/:id/comments`: Inserção de novos comentários vinculados ao documento
+- [x] Rota estática para servir os arquivos salvos localmente
+
+## Frontend (Em Andamento)
+- [ ] Estrutura base em HTML, CSS e JavaScript puro
+- [ ] Implementação do formulário de upload de documentos
+- [ ] Listagem dinâmica de documentos com acesso direto aos ficheiros
+- [ ] Interface interativa para visualização e inserção de comentários por documento
