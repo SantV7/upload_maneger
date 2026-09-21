@@ -1,4 +1,4 @@
-
+import './style/global.css'
 import { DocumentsPage } from "./pages/Documents/Documents"
 
 

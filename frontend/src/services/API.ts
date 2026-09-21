@@ -1,6 +1,6 @@
 import type { Document } from '../types/document_types';
 
-const API_BASE_URL = import.meta.env.VITE_API_ROUTE; 
+const API_BASE_URL = import.meta.env.APP_APP; 
 
 export const api = { async getDocuments(): Promise<Document[]> {
     const response = await fetch(`${API_BASE_URL}/documents`);
