@@ -1,9 +1,8 @@
 import type { Document } from '../types/document_types';
 
-const API_BASE_URL = 'http://localhost:3000'; // Ajusta conforme a porta do teu backend
+const API_BASE_URL = import.meta.env.VITE_API_ROUTE; 
 
-export const api = {
-  async getDocuments(): Promise<Document[]> {
+export const api = { async getDocuments(): Promise<Document[]> {
     const response = await fetch(`${API_BASE_URL}/documents`);
     if (!response.ok) throw new Error('Erro ao buscar documentos');
     return response.json();
