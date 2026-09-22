@@ -3,6 +3,7 @@ import { Modal } from '../UI/Modal/Modal';
 import { Input } from '../UI/Input/Input';
 import { Button } from '../UI/Button/Button';
 import { api } from '../../services/API';
+import styles from './UploadDoc.module.css'
 
 interface UploadProps {
   isOpen: boolean;
@@ -11,15 +12,24 @@ interface UploadProps {
 }
 
 export const UploadDocumentModal: React.FC<UploadProps> = ({ isOpen, onClose, onSuccess }) => {
-  const [title, setTitle] = useState('');
-  const [file, setFile] = useState<File | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [ title, setTitle ] = useState('');
+  const [ file, setFile ] = useState<File | null>(null);
+  const [ loading, setLoading ] = useState(false);
+  const [ errWarning, setErrWarning ] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!file ) return;
+
+    if(!file) {
+      setErrWarning('É necessário um arquivo!')
+      return;
+    };
+
+    setErrWarning('')
+
     
     setLoading(true);
+
     try {
       const formData = new FormData();
       formData.append('title', title);
@@ -47,10 +57,15 @@ export const UploadDocumentModal: React.FC<UploadProps> = ({ isOpen, onClose, on
           onChange={(e) => setTitle(e.target.value)} 
           placeholder="Nome do documento" 
         />
+        <div className={`${styles.err_warning} ${errWarning ? styles.active : ''}`}>
+          {errWarning}
+        </div>
+
         <input 
           type="file" 
           onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
         />
+
         <Button variant="primary" type="submit" disabled={loading}>
           {loading ? 'A enviar...' : 'Enviar'}
         </Button>
