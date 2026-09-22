@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { FolderSearch } from 'lucide-react';
 import { Modal } from '../UI/Modal/Modal';
 import { Input } from '../UI/Input/Input';
 import { Button } from '../UI/Button/Button';
 import { api } from '../../services/API';
-import styles from './UploadDoc.module.css'
+import styles from './UploadDoc.module.css';
 
 interface UploadProps {
   isOpen: boolean;
@@ -20,16 +21,14 @@ export const UploadDocumentModal: React.FC<UploadProps> = ({ isOpen, onClose, on
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if(!file) {
-      setErrWarning('É necessário um arquivo!')
+    if (!file) {
+      setErrWarning('É necessário um arquivo!');
       return;
-    };
+    }
 
-    setErrWarning('')
-
-    
+    setErrWarning('');
     setLoading(true);
-
+    
     try {
       const formData = new FormData();
       formData.append('title', title);
@@ -41,9 +40,9 @@ export const UploadDocumentModal: React.FC<UploadProps> = ({ isOpen, onClose, on
       setTitle('');
       setFile(null);
     } catch (error) {
-        console.error(error);
+      console.error(error);
+      setErrWarning('Erro ao enviar o documento.');
     } finally {
-      setTitle('')
       setLoading(false);
     }
   };
@@ -57,14 +56,28 @@ export const UploadDocumentModal: React.FC<UploadProps> = ({ isOpen, onClose, on
           onChange={(e) => setTitle(e.target.value)} 
           placeholder="Nome do documento" 
         />
+        
         <div className={`${styles.err_warning} ${errWarning ? styles.active : ''}`}>
           {errWarning}
         </div>
 
+
         <input 
           type="file" 
+          id="fileInput"
+          style={{ display: 'none' }} 
           onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
         />
+
+        <div className={styles.fileUploadContainer}>
+          <label htmlFor="fileInput" className={styles.customFileBtn}>
+            <FolderSearch size={20} />
+            Escolher arquivo
+          </label>
+          <span className={styles.fileName}>
+            {file ? file.name : 'Nenhum arquivo escolhido'}
+          </span>
+        </div>
 
         <Button variant="primary" type="submit" disabled={loading}>
           {loading ? 'A enviar...' : 'Enviar'}

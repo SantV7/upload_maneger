@@ -1,11 +1,33 @@
-.err_warning.active {
-    color: rgb(253, 249, 249);
-    background-color: rgb(255, 0, 0);
-    transition: ease 0.1s;
-    padding: 6px 12px;
-    text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.911);
-    border-radius: 4px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.219);
+.fileUploadContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.customFileBtn {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 5px;
+  background-color: #2563eb;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease;
+
+}
+
+.customFileBtn:hover {
+  background-color: #1d4ed8;
+}
+
+.fileName {
+  font-size: 0.9rem;
+  color: #4b5563;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 220px;
 }
