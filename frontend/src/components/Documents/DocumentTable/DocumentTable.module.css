@@ -13,10 +13,10 @@
   font-weight: 600;
   color: #6b7280;
   border-bottom: 1px solid #e5e7eb;
+}
 
-  span {
-    font-size: 0.95rem;
-  }
+.header span {
+  font-size: 0.95rem;
 }
 
 .icon_date {

@@ -8,11 +8,11 @@ import { uploadMiddleware } from '../middlewares/authUpload.ts';
 
 export const documentRouter = Router();
 
-documentRouter.get('/document', authAnalizyDoc, analizyDoc);
+documentRouter.get('/documents', authAnalizyDoc, analizyDoc);
 
-documentRouter.get('/document/:id', authAnalizyExclusiveDoc, analizyExclusiveDoc);
+documentRouter.get('/documents/:id', authAnalizyExclusiveDoc, analizyExclusiveDoc);
 
-documentRouter.post('/document', authSendDoc, uploadMiddleware.single('file'),sendDoc);
+documentRouter.post('/documents', uploadMiddleware.single('file'), authSendDoc, sendDoc);
 
-documentRouter.delete('/document/:id', authDeleteDoc, deleteDoc);
+documentRouter.delete('/documents/:id', authDeleteDoc, deleteDoc);
 

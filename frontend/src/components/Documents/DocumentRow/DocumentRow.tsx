@@ -11,16 +11,16 @@ interface DocumentRowProps {
   onEdit: (doc: Document) => void;
 }
 
-export const DocumentRow: React.FC<DocumentRowProps> = ({
-  document,
-  isSelected,
-  onSelect,
-  onDelete,
-  onEdit
+export const DocumentRow: React.FC<DocumentRowProps> = ({ 
+  document, 
+  isSelected, 
+  onSelect, 
+  onDelete, 
+  onEdit 
 }) => {
   return (
-    <div
-      className={`${styles.row} ${isSelected ? styles.selected : ''}`}
+    <div 
+      className={`${styles.row} ${isSelected ? styles.selected : ''}`} 
       onClick={() => onSelect(document)}
     >
       <span className={styles.title}>{document.title}</span>

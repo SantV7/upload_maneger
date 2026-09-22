@@ -6,7 +6,8 @@ export const analizyDoc = async (req: Request, res: Response) => {
         const documents = await prisma.document.findMany();
         
         return res.status(200).json(documents);
-    } catch (error) {
+    } catch (err) {
+        console.log("ERRO AO LISTAR:", err);
         return res.status(500).json({ error: "Erro ao listar documentos" });
     }
 };
@@ -24,7 +25,8 @@ export const analizyExclusiveDoc = async (req: Request, res: Response) => {
         }
 
         return res.status(200).json(document);
-    } catch (error) {
+    } catch (err) {
+        console.log("ERRO DE BUSCA:", err);
         return res.status(500).json({ error: "Erro ao buscar documento" });
     }
 };
@@ -48,7 +50,8 @@ export const sendDoc = async (req: Request, res: Response) => {
         });
 
         return res.status(201).json(newDocument);
-    } catch (error) {
+    } catch (err) {
+        console.log("ERRO DE UPLOAD:", err);
         return res.status(500).json({ error: "Erro ao salvar o documento" });
     }
 };
@@ -62,7 +65,8 @@ export const deleteDoc = async (req: Request, res: Response) => {
         });
 
         return res.status(204).send();
-    } catch (error) {
+    } catch (err) {
+        console.log("ERRO AO DELETAR:", err);
         return res.status(500).json({ error: "Erro ao deletar documento" });
     }
 };

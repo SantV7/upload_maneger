@@ -2,43 +2,43 @@ import type { Document } from '../types/document_types';
 
 const API_BASE_URL = import.meta.env.APP_API_ROUTE; 
 
-export const api = { async getDocuments(): Promise<Document[]> {
+export const api = {
+  async getDocuments(): Promise<Document[]> {
     const response = await fetch(`${API_BASE_URL}/documents`);
-    if (!response.ok) throw new Error('Erro ao buscar documentos');
+    if (!response.ok) throw new Error('Erro ao buscar documentos.');
     return response.json();
   },
 
   async getDocumentById(id: string): Promise<Document> {
     const response = await fetch(`${API_BASE_URL}/documents/${id}`);
-    if (!response.ok) throw new Error('Erro ao buscar detalhes do documento');
+    if (!response.ok) throw new Error('Erro ao buscar detalhes do documento.');
     return response.json();
   },
-
-async deleteDocument(id: string): Promise<any> {
-  const response = await fetch(`${API_BASE_URL}/documents/${id}`, {
-    method: 'DELETE',
-  });
-  if (!response.ok) throw new Error('Erro ao deletar o documento.');
-  return true;
-},
-
-async updateDocument(id: string, title: string): Promise<Document> {
-  const response = await fetch(`${API_BASE_URL}/documents/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ title }),
-  });
-  if (!response.ok) throw new Error('Erro ao atualizar o documento.');
-  return response.json();
-},
 
   async uploadDocument(formData: FormData): Promise<Document> {
     const response = await fetch(`${API_BASE_URL}/documents`, {
       method: 'POST',
       body: formData,
     });
-    if (!response.ok) throw new Error('Erro ao fazer upload do documento');
+    if (!response.ok) throw new Error('Erro ao fazer upload do documento.');
     return response.json();
+  },
+
+  async updateDocument(id: string, title: string): Promise<Document> {
+    const response = await fetch(`${API_BASE_URL}/documents/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title }),
+    });
+    if (!response.ok) throw new Error('Erro ao atualizar documento.');
+    return response.json();
+  },
+
+  async deleteDocument(id: string): Promise<void> {
+    const response = await fetch(`${API_BASE_URL}/documents/${id}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) throw new Error('Erro ao excluir documento.');
   },
 
   async addComment(documentId: string, content: string): Promise<any> {
@@ -50,7 +50,6 @@ async updateDocument(id: string, title: string): Promise<Document> {
     if (!response.ok) throw new Error('Erro ao adicionar comentário.');
     return response.json();
   },
-
 
   getFileUrl(filePath: string): string {
     return `${API_BASE_URL}/${filePath}`;

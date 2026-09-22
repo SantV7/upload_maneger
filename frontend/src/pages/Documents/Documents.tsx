@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import styles from './Documents.module.css';
-import { DocumentTable } from '../../components/Documents/DocumentTable/DocumentTable';
 import type { Document } from '../../types/document_types';
 import { api } from '../../services/API';
 import { Sidebar } from '../../app/sidebar/Sidebar';
+import { DocumentTable } from '../../components/Documents/DocumentTable/DocumentTable';
+import { UploadDocumentModal } from '../../components/Upload/UploadDocumentModal';
 import { Button } from '../../components/UI/Button/Button';
+import styles from './Documents.module.css';
+import { CommentItem } from '../../components/Comments/CommenttItem/CommentItem';
+import { CommentForm } from '../../components/Comments/CommentForm/CommentForm';
 
 export const DocumentsPage: React.FC = () => {
   const [documents, setDocuments] = useState<Document[]>([]);
   const [selectedDoc, setSelectedDoc] = useState<Document | null>(null);
-  const [activeTab, setActiveTab] = useState('documentos');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'upload' | 'documents'>('documents');
 
   // Estados para o Modal de Edição Bonito
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingDoc, setEditingDoc] = useState<Document | null>(null);
   const [newTitle, setNewTitle] = useState('');
-
-  useEffect(() => {
-    loadDocuments();
-  }, []);
 
   const loadDocuments = async () => {
     try {
@@ -33,12 +32,25 @@ export const DocumentsPage: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    loadDocuments();
+  }, []);
+
+  const handleSelectDoc = async (doc: Document) => {
+    try {
+      const fullDoc = await api.getDocumentById(doc.id);
+      setSelectedDoc(fullDoc);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleDelete = async (id: string) => {
     try {
       await api.deleteDocument(id);
-      setDocuments(documents.filter(d => d.id !== id));
+      setDocuments(documents.filter(doc => doc.id !== id));
       if (selectedDoc?.id === id) {
-        const remaining = documents.filter(d => d.id !== id);
+        const remaining = documents.filter(doc => doc.id !== id);
         setSelectedDoc(remaining.length > 0 ? remaining[0] : null);
       }
     } catch (error) {
@@ -69,15 +81,25 @@ export const DocumentsPage: React.FC = () => {
     }
   };
 
+  const handleAddComment = async (content: string) => {
+    if (!selectedDoc) return;
+    try {
+      await api.addComment(selectedDoc.id, content);
+      handleSelectDoc(selectedDoc);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className={styles.container}>
-      <Sidebar
-        onOpenUpload={() => setIsModalOpen(true)}
+      <Sidebar 
+        onOpenUpload={() => setIsModalOpen(true)} 
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         totalDocuments={documents.length}
       />
-
+      
       <main className={styles.main}>
         <header className={styles.header}>
           <h1>Documentos</h1>
@@ -85,15 +107,44 @@ export const DocumentsPage: React.FC = () => {
         </header>
 
         <div className={styles.contentGrid}>
-          <DocumentTable
-            documents={documents}
-            onSelectDocument={setSelectedDoc}
-            selectedId={selectedDoc?.id}
-            onDelete={handleDelete}
-            onEdit={handleEditClick}
-          />
+          <div className={styles.tableWrapper}>
+            <DocumentTable 
+              documents={documents} 
+              onSelectDocument={handleSelectDoc} 
+              selectedId={selectedDoc?.id} 
+              onDelete={handleDelete}
+              onEdit={handleEditClick}
+            />
+          </div>
+
+          {selectedDoc && (
+            <div className={styles.detailsPanel}>
+              <div className={styles.previewCard}>
+                <strong>{selectedDoc.title}</strong>
+                <a href={api.getFileUrl(selectedDoc.filePath)} target="_blank" rel="noreferrer">
+                  <Button variant="primary">Visualizar / Download</Button>
+                </a>
+              </div>
+
+              <div className={styles.commentsSection}>
+                <h3>Comentários</h3>
+                <div className={styles.commentList}>
+                  {selectedDoc.comments?.map((comment) => (
+                    <CommentItem key={comment.id} text={comment.text} createdAt={comment.createdAt} />
+                  ))}
+                </div>
+                <CommentForm onSubmitComment={handleAddComment} />
+              </div>
+            </div>
+          )}
         </div>
       </main>
+
+      <UploadDocumentModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        onSuccess={loadDocuments} 
+      />
 
       {/* Modal de Edição Personalizado */}
       {isEditModalOpen && (
@@ -101,10 +152,10 @@ export const DocumentsPage: React.FC = () => {
           <div className={styles.modalContent}>
             <h3>Editar Título do Documento</h3>
             <form onSubmit={handleSaveEdit}>
-              <input
-                type="text"
-                value={newTitle}
-                onChange={(e) => setNewTitle(e.target.value)}
+              <input 
+                type="text" 
+                value={newTitle} 
+                onChange={(e) => setNewTitle(e.target.value)} 
                 className={styles.modalInput}
                 autoFocus
               />

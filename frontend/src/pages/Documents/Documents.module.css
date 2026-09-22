@@ -1,13 +1,12 @@
 .container {
   display: flex;
   height: 100vh;
-  width: 100vw;
-  background-color: #f8fafc;
+  background: #f4f5f7;
 }
 
 .main {
   flex: 1;
-  padding: 32px;
+  padding: 30px;
   overflow-y: auto;
 }
 
@@ -17,18 +16,58 @@
 
 .header h1 {
   font-size: 24px;
-  font-weight: 700;
-  color: #0f172a;
+  color: #111827;
 }
 
 .header p {
-  color: #64748b;
   font-size: 14px;
+  color: #6b7280;
 }
 
 .contentGrid {
-  display: flex;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
   gap: 24px;
+}
+
+.tableWrapper {
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.detailsPanel {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: fit-content;
+}
+
+.previewCard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.commentsSection h3 {
+  font-size: 16px;
+  margin-bottom: 12px;
+  color: #111827;
+}
+
+.commentList {
+  max-height: 250px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 /* Estilos do Modal de Edição */

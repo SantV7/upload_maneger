@@ -4,6 +4,6 @@ import { createComment, listCommentsByDocument } from "../controllers/commentCon
 
 export const commentRouter = Router();
 
-commentRouter.post("/document/:documentId/comment", validateComment, createComment);
+commentRouter.post("/documents/:documentId/comments", validateComment, createComment);
 
-commentRouter.get("/document/:documentId/comment", listCommentsByDocument);
+commentRouter.get("/documents/:documentId/comments", listCommentsByDocument);
