@@ -1,9 +1,12 @@
+.documentItem {
+  border-bottom: 1px solid #f3f4f6;
+}
+
 .row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
-  border-bottom: 1px solid #f3f4f6;
   cursor: pointer;
   transition: background 0.2s;
 }
@@ -55,4 +58,70 @@
 .actionBtn:hover {
   color: #2563eb;
   background: #e0e7ff;
+}
+
+.commentsSection {
+  padding: 14px 16px 16px 20px;
+  background: #f8fbff;
+  border-left: 4px solid #2563eb;
+}
+
+.commentsSection h3 {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: #1f2937;
+}
+
+.commentList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.commentItem {
+  padding: 10px 12px;
+  background: rgba(107, 114, 128, 0.16);
+  border: 1px solid rgba(107, 114, 128, 0.24);
+  border-radius: 6px;
+}
+
+.commentItem p {
+  margin: 0 0 4px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.commentItem time {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.noComments {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+@media (max-width: 520px) {
+  .row {
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .title {
+    overflow-wrap: anywhere;
+  }
+
+  .rightSection {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .commentsSection {
+    padding: 12px;
+  }
 }

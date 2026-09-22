@@ -5,9 +5,8 @@ import { Sidebar } from '../../app/sidebar/Sidebar';
 import { DocumentTable } from '../../components/Documents/DocumentTable/DocumentTable';
 import { UploadDocumentModal } from '../../components/Upload/UploadDocumentModal';
 import { Button } from '../../components/UI/Button/Button';
+import { Download } from 'lucide-react';
 import styles from './Documents.module.css';
-import { CommentItem } from '../../components/Comments/CommenttItem/CommentItem';
-import { CommentForm } from '../../components/Comments/CommentForm/CommentForm';
 
 export const DocumentsPage: React.FC = () => {
   const [documents, setDocuments] = useState<Document[]>([]);
@@ -15,7 +14,6 @@ export const DocumentsPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'dashboard' | 'upload' | 'documents'>('documents');
 
-  // Estados para o Modal de Edição Bonito
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingDoc, setEditingDoc] = useState<Document | null>(null);
   const [newTitle, setNewTitle] = useState('');
@@ -24,8 +22,13 @@ export const DocumentsPage: React.FC = () => {
     try {
       const data = await api.getDocuments();
       setDocuments(data);
-      if (data.length > 0 && !selectedDoc) {
-        setSelectedDoc(data[0]);
+      if (data.length > 0) {
+        const currentSelectedId = selectedDoc?.id || data[0].id;
+        const found = data.find(d => d.id === currentSelectedId) || data[0];
+        const fullDoc = await api.getDocumentById(found.id);
+        setSelectedDoc(fullDoc);
+      } else {
+        setSelectedDoc(null);
       }
     } catch (error) {
       console.error(error);
@@ -33,13 +36,30 @@ export const DocumentsPage: React.FC = () => {
   };
 
   useEffect(() => {
-    loadDocuments();
+    const loadInitialDocuments = async () => {
+      try {
+        const data = await api.getDocuments();
+        setDocuments(data);
+
+        if (data.length > 0) {
+          const fullDoc = await api.getDocumentById(data[0].id);
+          setSelectedDoc(fullDoc);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    void loadInitialDocuments();
   }, []);
 
   const handleSelectDoc = async (doc: Document) => {
     try {
       const fullDoc = await api.getDocumentById(doc.id);
       setSelectedDoc(fullDoc);
+      setDocuments((currentDocuments) => currentDocuments.map((item) =>
+        item.id === fullDoc.id ? { ...item, comments: fullDoc.comments } : item
+      ));
     } catch (error) {
       console.error(error);
     }
@@ -48,10 +68,15 @@ export const DocumentsPage: React.FC = () => {
   const handleDelete = async (id: string) => {
     try {
       await api.deleteDocument(id);
-      setDocuments(documents.filter(doc => doc.id !== id));
+      const remaining = documents.filter(doc => doc.id !== id);
+      setDocuments(remaining);
       if (selectedDoc?.id === id) {
-        const remaining = documents.filter(doc => doc.id !== id);
-        setSelectedDoc(remaining.length > 0 ? remaining[0] : null);
+        if (remaining.length > 0) {
+          const fullDoc = await api.getDocumentById(remaining[0].id);
+          setSelectedDoc(fullDoc);
+        } else {
+          setSelectedDoc(null);
+        }
       }
     } catch (error) {
       console.error(error);
@@ -69,10 +94,11 @@ export const DocumentsPage: React.FC = () => {
     if (!editingDoc || !newTitle.trim()) return;
 
     try {
-      const updated = await api.updateDocument(editingDoc.id, newTitle);
-      setDocuments(documents.map(d => d.id === editingDoc.id ? updated : d));
+      await api.updateDocument(editingDoc.id, newTitle);
+      const fullDoc = await api.getDocumentById(editingDoc.id);
+      setDocuments(documents.map(d => d.id === editingDoc.id ? fullDoc : d));
       if (selectedDoc?.id === editingDoc.id) {
-        setSelectedDoc(updated);
+        setSelectedDoc(fullDoc);
       }
       setIsEditModalOpen(false);
       setEditingDoc(null);
@@ -85,10 +111,22 @@ export const DocumentsPage: React.FC = () => {
     if (!selectedDoc) return;
     try {
       await api.addComment(selectedDoc.id, content);
-      handleSelectDoc(selectedDoc);
+      const fullDoc = await api.getDocumentById(selectedDoc.id);
+      setSelectedDoc(fullDoc);
+      setDocuments((currentDocuments) => currentDocuments.map((item) =>
+        item.id === fullDoc.id ? { ...item, comments: fullDoc.comments } : item
+      ));
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const getCleanFileName = (filePath?: string) => {
+    if (!filePath) return 'Desconhecido';
+    const parts = filePath.split(/[/\\]/);
+    const fullName = parts[parts.length - 1];
+    const cleanName = fullName.replace(/^\d+-\d+-/, '');
+    return cleanName;
   };
 
   return (
@@ -114,29 +152,30 @@ export const DocumentsPage: React.FC = () => {
               selectedId={selectedDoc?.id} 
               onDelete={handleDelete}
               onEdit={handleEditClick}
+              onAddComment={handleAddComment}
             />
           </div>
 
-          {selectedDoc && (
-            <div className={styles.detailsPanel}>
+          <div className={styles.detailsPanel}>
+            {selectedDoc ? (
               <div className={styles.previewCard}>
                 <strong>{selectedDoc.title}</strong>
-                <a href={api.getFileUrl(selectedDoc.filePath)} target="_blank" rel="noreferrer">
-                  <Button variant="primary">Visualizar / Download</Button>
-                </a>
-              </div>
-
-              <div className={styles.commentsSection}>
-                <h3>Comentários</h3>
-                <div className={styles.commentList}>
-                  {selectedDoc.comments?.map((comment) => (
-                    <CommentItem key={comment.id} text={comment.text} createdAt={comment.createdAt} />
-                  ))}
+                <div className={styles.fileDetails}>
+                  <span><strong>Nome do arquivo:</strong> {getCleanFileName(selectedDoc.filePath)}</span>
+                  <span><strong>Extensão:</strong> {selectedDoc.filePath?.split('.').pop()?.toUpperCase()}</span>
                 </div>
-                <CommentForm onSubmitComment={handleAddComment} />
+                <a href={api.getDownloadUrl(selectedDoc.id)}>
+                  <Button variant="primary">
+                    <Download size={18} />
+                    Baixar arquivo
+                  </Button>
+                </a>
+
               </div>
-            </div>
-          )}
+            ) : (
+              <p className={styles.noSelection}>Selecione um documento ao lado para ver os detalhes e comentários.</p>
+            )}
+          </div>
         </div>
       </main>
 
@@ -146,7 +185,6 @@ export const DocumentsPage: React.FC = () => {
         onSuccess={loadDocuments} 
       />
 
-      {/* Modal de Edição Personalizado */}
       {isEditModalOpen && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>

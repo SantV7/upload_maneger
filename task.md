@@ -1,25 +1,24 @@
-# Task List & Roadmap
+# Checklist da prova técnica
 
-## Setup Inicial
-- [x] Inicialização do repositório Git
-- [x] Estruturação das pastas `frontend` e `backend`
-- [x] Criação do `.gitignore` na raiz
-- [x] Documentação base (`README.md`, `task.md`)
+## Aplicação
 
-## Backend (Concluído)
-- [x] Inicialização do projeto Node.js
-- [x] Instalação e configuração do Express com TypeScript
-- [x] Configuração do Prisma ORM e PostgreSQL
-- [x] Implementação do módulo de documentos (upload local via Multer, metadados e listagem)
-- [x] Implementação do módulo de comentários (criação, listagem e relação em cascata)
-- [x] `POST /documents`: Upload de arquivos (PDF, JPG ou PNG), armazenamento local e persistência no banco
-- [x] `GET /documents`: Listagem de todos os documentos cadastrados
-- [x] `GET /documents/:id`: Detalhes de um documento específico e seu histórico de comentários
-- [x] `POST /documents/:id/comments`: Inserção de novos comentários vinculados ao documento
-- [x] Rota estática para servir os arquivos salvos localmente
+- [x] Upload local de PDF, JPG e PNG.
+- [x] Validação de formato e limite de 10 MB no backend.
+- [x] Título obrigatório e descrição opcional.
+- [x] Persistência de documentos no PostgreSQL.
+- [x] Listagem por título e data de upload.
+- [x] Download do arquivo selecionado.
+- [x] Criação de comentários por documento.
+- [x] Histórico de comentários associado por `documentId`.
+- [x] Exibição de data e hora em cada comentário.
+- [x] Relacionamento Prisma com exclusão em cascata.
+- [x] Interface responsiva para desktop, tablet e celular.
 
-## Frontend (Em Andamento)
-- [ ] Estrutura base em HTML, CSS e JavaScript puro
-- [ ] Implementação do formulário de upload de documentos
-- [ ] Listagem dinâmica de documentos com acesso direto aos ficheiros
-- [ ] Interface interativa para visualização e inserção de comentários por documento
+## Qualidade e entrega
+
+- [x] README com instalação, variáveis de ambiente, rotas e limitações.
+- [x] Build do frontend e validações de TypeScript/lint executados localmente.
+- [ ] Commitar e enviar as alterações finais ao GitHub.
+- [ ] Fazer deploy público do frontend, backend e banco de dados.
+- [ ] Inserir a URL pública da aplicação no README.
+- [ ] Testar upload, download e comentários na URL publicada.

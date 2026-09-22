@@ -1,4 +1,4 @@
-import type { Document } from '../types/document_types';
+import type { Comment, Document } from '../types/document_types';
 
 const API_BASE_URL = import.meta.env.APP_API_ROUTE; 
 
@@ -34,6 +34,16 @@ export const api = {
     return response.json();
   },
 
+  async addComment(documentId: string, content: string): Promise<Comment> {
+    const response = await fetch(`${API_BASE_URL}/documents/${documentId}/comments`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: content }),
+    });
+    if (!response.ok) throw new Error('Erro ao adicionar comentário.');
+    return response.json();
+  },
+
   async deleteDocument(id: string): Promise<void> {
     const response = await fetch(`${API_BASE_URL}/documents/${id}`, {
       method: 'DELETE',
@@ -41,17 +51,7 @@ export const api = {
     if (!response.ok) throw new Error('Erro ao excluir documento.');
   },
 
-  async addComment(documentId: string, content: string): Promise<any> {
-    const response = await fetch(`${API_BASE_URL}/documents/${documentId}/comments`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content }),
-    });
-    if (!response.ok) throw new Error('Erro ao adicionar comentário.');
-    return response.json();
-  },
-
-  getFileUrl(filePath: string): string {
-    return `${API_BASE_URL}/${filePath}`;
+  getDownloadUrl(id: string): string {
+    return `${API_BASE_URL}/documents/${id}/download`;
   }
 };

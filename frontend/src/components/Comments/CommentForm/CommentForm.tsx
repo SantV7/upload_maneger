@@ -20,7 +20,7 @@ export const CommentForm: React.FC<CommentFormProps> = ({ onSubmitComment }) => 
     <form onSubmit={handleSubmit} className={styles.form}>
       <input 
         type="text" 
-        placeholder="Adicione um comentário..." 
+        placeholder="Adicione um comentário"
         value={content} 
         onChange={(e) => setContent(e.target.value)}
         className={styles.input}

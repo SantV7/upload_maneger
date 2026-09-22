@@ -33,3 +33,16 @@
   flex-direction: column;
   gap: 16px;
 }
+
+@media (max-width: 540px) {
+  .overlay {
+    align-items: flex-start;
+    overflow-y: auto;
+    padding: 16px;
+  }
+
+  .modal {
+    margin: auto 0;
+    padding: 16px;
+  }
+}

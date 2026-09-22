@@ -15,5 +15,20 @@ const storage = multer.diskStorage({
     }
 });
 
+const allowedMimeTypes = new Set([
+    'application/pdf',
+    'image/jpeg',
+    'image/png'
+]);
 
-export const uploadMiddleware = multer({ storage });
+export const uploadMiddleware = multer({
+    storage,
+    limits: { fileSize: 10 * 1024 * 1024 },
+    fileFilter: (_req, file, cb) => {
+        if (!allowedMimeTypes.has(file.mimetype)) {
+            return cb(new Error('Formato inválido. Envie um arquivo PDF, JPG ou PNG.'));
+        }
+
+        cb(null, true);
+    }
+});

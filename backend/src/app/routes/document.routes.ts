@@ -1,18 +1,17 @@
 import { Router } from 'express'
 
-import { analizyDoc, analizyExclusiveDoc, deleteDoc, sendDoc } from '../controllers/documentController.ts';
+import { analizyDoc, analizyExclusiveDoc, deleteDoc, downloadDoc, updateDoc, sendDoc } from '../controllers/documentController.ts';
 
-import { authAnalizyDoc, authAnalizyExclusiveDoc, authDeleteDoc, authSendDoc } from '../middlewares/authDocument.ts';
 import { uploadMiddleware } from '../middlewares/authUpload.ts';
+import { authUpdateDoc } from '../middlewares/authUpdateDoc.ts';
 
 
 export const documentRouter = Router();
 
-documentRouter.get('/documents', authAnalizyDoc, analizyDoc);
-
-documentRouter.get('/documents/:id', authAnalizyExclusiveDoc, analizyExclusiveDoc);
-
-documentRouter.post('/documents', uploadMiddleware.single('file'), authSendDoc, sendDoc);
-
-documentRouter.delete('/documents/:id', authDeleteDoc, deleteDoc);
+documentRouter.get('/documents', analizyDoc);
+documentRouter.get('/documents/:id/download', downloadDoc);
+documentRouter.get('/documents/:id', analizyExclusiveDoc);
+documentRouter.post('/documents', uploadMiddleware.single('file'), sendDoc);
+documentRouter.put("/documents/:id", authUpdateDoc,updateDoc);
+documentRouter.delete('/documents/:id', deleteDoc);
 

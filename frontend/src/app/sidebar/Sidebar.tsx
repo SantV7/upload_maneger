@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+
 import { Button } from '../../components/UI/Button/Button';
 import styles from './Sidebar.module.css';
-import { LayoutDashboard, ShipCargo, UploadCloud, FolderOpen, DiamondPlus, FileText, File } from 'lucide-react';
+import {  ShipCargo, UploadCloud, FolderOpen, DiamondPlus  } from 'lucide-react';
 
 interface SidebarProps {
   onOpenUpload: () => void;
@@ -16,7 +16,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
   setActiveTab, 
   totalDocuments 
 }) => {
-  const [docIconHover, setDocIconHover] = useState<boolean>(false);
 
   return (
     <aside className={styles.sidebar}>
@@ -34,13 +33,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
       
       <nav className={styles.nav}>
-        <button 
-          onClick={() => setActiveTab('dashboard')}
-          className={`${styles.navItem} ${activeTab === 'dashboard' ? styles.active : ''}`}
-        >
-          <LayoutDashboard size={18} />
-          <span>Painel</span>
-        </button>
 
         <button 
           onClick={() => {
@@ -62,16 +54,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <span className={styles.badge}>{totalDocuments}</span>
         </button>
 
-        <div 
-          className={styles.navItem}
-          onMouseEnter={() => setDocIconHover(true)}
-          onMouseLeave={() => setDocIconHover(false)}
-        >
-          <span>Total</span>
-          <span className={styles.totalBadge}>
-            {totalDocuments} {docIconHover ? <FileText size={16} /> : <File size={16} />}
-          </span>
-        </div>
+
       </nav>
     </aside>
   );

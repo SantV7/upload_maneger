@@ -1,75 +1,101 @@
-# Document Manager - Prova Técnica Full Stack
+# DocumentFlow
 
-Sistema de gestão de documentos e comentários desenvolvido com arquitetura Full-Stack para avaliação técnica, focado em organização, robustez de backend e clareza de implementação.
+Aplicação Full Stack para upload local de documentos e gestão de comentários por documento. Desenvolvida para a prova técnica de Estágio Desenvolvedor Full Stack.
 
-## Visão Geral do Projeto
+## Funcionalidades
 
-O **Document Manager** é uma aplicação projetada para centralizar o upload, armazenamento, consulta de ficheiros e gestão de interações através de comentários estruturados. A arquitetura foi dividida em um microsserviço de API RESTful robusto e uma interface de cliente moderna e reativa.
+- Upload de documentos PDF, JPG e PNG (limite de 10 MB).
+- Título obrigatório e descrição opcional.
+- Armazenamento local em `backend/uploads` e persistência dos metadados no PostgreSQL.
+- Listagem de documentos com título e data de envio.
+- Download do arquivo selecionado.
+- Inclusão e histórico de comentários associados ao documento correto, com data e hora de registro.
+- Exclusão de documento e comentários relacionados em cascata.
+- Interface responsiva para desktop, tablet e celular.
 
-## Arquitetura e Tecnologias
+## Tecnologias
 
-- **Frontend:** 
-  - React (com Vite para otimização de build)
-  - TypeScript para tipagem estática e segurança de código
-- **Backend:** 
-  - Node.js & Express
-  - TypeScript
-  - Multer (gestão de upload de ficheiros binários)
-- **Banco de Dados & ORM:** 
-  - PostgreSQL (relacional)
-  - Prisma ORM (gestão de migrações e mapeamento de dados)
+- Frontend: React, TypeScript e Vite.
+- Backend: Node.js, Express e TypeScript.
+- Banco de dados: PostgreSQL com Prisma ORM.
+- Upload: Multer.
 
-## Arquitetura do Banco de Dados & Schema
+## Estrutura de dados
 
-A modelagem de dados relacional é composta por duas entidades principais com uma relação de dependência em cascata (`Cascade Delete`):
+`Document` possui título, descrição opcional, caminho do arquivo, tipo MIME e data de criação. `Comment` possui texto, data de criação e `documentId`, uma chave estrangeira para `Document`. Ao excluir um documento, seus comentários são excluídos em cascata.
 
-1. **Document (`Documento`)**
-   - `id`: Identificador único (UUID ou autoincrement)
-   - `title`: Título descritivo do documento
-   - `filename`: Nome gerado ou original do ficheiro no servidor
-   - `path`: Caminho relativo de armazenamento local
-   - `createdAt`: Data e hora de registo
-
-2. **Comment (`Comentário`)**
-   - `id`: Identificador único
-   - `content`: Texto do comentário
-   - `documentId`: Chave estrangeira referenciando o documento associado
-   - `createdAt`: Data e hora de criação
-
-## Documentação dos Endpoints da API (Backend)
-
-| Método | Rota | Descrição |
-| :--- | :--- | :--- |
-| **POST** | `/documents` | Realiza o upload de um ficheiro (PDF, JPG, PNG), armazena-o localmente e persiste os metadados. |
-| **GET** | `/documents` | Retorna a listagem completa de todos os documentos registados na base de dados. |
-| **GET** | `/documents/:id` | Retorna os detalhes de um documento específico juntamente com o seu histórico completo de comentários. |
-| **POST** | `/documents/:id/comments` | Adiciona um novo comentário textual vinculado diretamente ao documento informado pelo ID. |
-| **GET** | `/uploads/...` | Rota estática responsável por servir os ficheiros armazenados localmente para visualização ou download. |
-
-## Instruções para Execução Local
+## Execução local
 
 ### Pré-requisitos
-- Node.js instalado na máquina
-- Servidor PostgreSQL ativo localmente ou em container
 
-### 1. Configuração do Backend
-\`\`\`bash
+- Node.js 20 ou superior.
+- PostgreSQL em execução.
+
+### Backend
+
+```bash
 cd backend
 npm install
-# Crie um ficheiro .env na pasta backend com a sua DATABASE_URL do PostgreSQL:
-# DATABASE_URL="postgresql://usuario:senha@localhost:5432/nome_do_banco?schema=public"
+```
+
+Crie `backend/.env`:
+
+```env
+PORT=3000
+DATABASE_URL="postgresql://USUARIO:SENHA@localhost:5432/NOME_DO_BANCO?schema=public"
+```
+
+Execute as migrations e inicie a API:
+
+```bash
 npx prisma migrate dev
 npm run dev
-\`\`\`
+```
 
-### 2. Configuração do Frontend
-\`\`\`bash
+### Frontend
+
+```bash
 cd frontend
 npm install
+```
+
+Crie `frontend/.env`:
+
+```env
+APP_API_ROUTE=http://localhost:3000
+```
+
+Inicie a interface:
+
+```bash
 npm run dev
-\`\`\`
+```
 
-## Decisões de Arquitetura e Observações
-- **Ausência de Autenticação:** Conforme os requisitos específicos do escopo da prova técnica, o sistema omite camadas de autenticação ou login de utilizadores para priorizar a agilidade e o foco nas regras de negócio centrais de documentos e comentários.
+## Rotas da API
 
-- **Armazenamento de Ficheiros:** Utiliza o sistema de ficheiros local gerido pelo Multer no backend, garantindo simplicidade e portabilidade para o ambiente de testes.
+| Método | Rota | Descrição |
+| --- | --- | --- |
+| `POST` | `/documents` | Envia um PDF, JPG ou PNG. Campos: `title`, `description` opcional e `file`. |
+| `GET` | `/documents` | Lista documentos com seus comentários. |
+| `GET` | `/documents/:id` | Retorna um documento e seu histórico de comentários. |
+| `GET` | `/documents/:id/download` | Faz o download do arquivo do documento. |
+| `PUT` | `/documents/:id` | Atualiza título e/ou descrição. |
+| `DELETE` | `/documents/:id` | Exclui o documento e seus comentários. |
+| `POST` | `/documents/:documentId/comments` | Cria um comentário vinculado ao documento. |
+| `GET` | `/documents/:documentId/comments` | Lista comentários de um documento. |
+
+## Verificação
+
+```bash
+cd backend && npx tsc --noEmit
+cd frontend && npm run lint && npm run build
+```
+
+## Deploy
+
+O deploy público ainda deve ser configurado. Antes de publicar, defina `DATABASE_URL` e `PORT` no ambiente do backend e `APP_API_ROUTE` com a URL pública da API no ambiente do frontend. Após a publicação, inclua aqui a URL pública da aplicação.
+
+## Observações
+
+- Não há autenticação, conforme o escopo da prova.
+- O armazenamento é local. Em plataformas com sistema de arquivos efêmero, use armazenamento persistente ou um serviço de arquivos para preservar uploads após reinicializações.

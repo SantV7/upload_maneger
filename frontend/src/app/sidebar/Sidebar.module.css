@@ -102,3 +102,44 @@
   color: #ffffff;
   font-size: 12px;
 }
+
+@media (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    padding: 14px 16px;
+    border-right: none;
+  }
+
+  .logo {
+    display: none;
+  }
+
+  .actionTop {
+    margin: 0 0 12px;
+    padding: 0;
+  }
+
+  .actionTop button {
+    width: 100%;
+  }
+
+  .nav {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .navItem {
+    justify-content: center;
+    padding: 9px;
+  }
+
+  .navItem span:not(.badge) {
+    display: none;
+  }
+
+  .badge {
+    margin-left: 0;
+  }
+}

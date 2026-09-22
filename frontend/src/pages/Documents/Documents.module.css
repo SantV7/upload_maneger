@@ -56,6 +56,18 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
+.fileDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.fileDetails span {
+  overflow-wrap: anywhere;
+}
+
 .commentsSection h3 {
   font-size: 16px;
   margin-bottom: 12px;
@@ -120,4 +132,69 @@
   justify-content: flex-end;
   gap: 10px;
   margin-top: 10px;
+}
+
+@media (max-width: 1024px) {
+  .main {
+    padding: 24px;
+  }
+
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .detailsPanel {
+    order: -1;
+  }
+}
+
+@media (max-width: 700px) {
+  .container {
+    display: block;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .main {
+    padding: 16px;
+    overflow: visible;
+  }
+
+  .header {
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 22px;
+  }
+
+  .contentGrid {
+    gap: 16px;
+  }
+
+  .tableWrapper,
+  .detailsPanel {
+    padding: 12px;
+    border-radius: 6px;
+  }
+
+  .fileDetails {
+    font-size: 13px;
+  }
+
+  .modalOverlay {
+    padding: 16px;
+  }
+
+  .modalContent {
+    padding: 20px;
+  }
+
+  .modalActions {
+    flex-direction: column-reverse;
+  }
+
+  .modalActions button {
+    width: 100%;
+  }
 }

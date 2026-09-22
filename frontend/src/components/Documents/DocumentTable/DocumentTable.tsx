@@ -10,6 +10,7 @@ interface DocumentTableProps {
   selectedId?: string;
   onDelete: (id: string) => void;
   onEdit: (doc: Document) => void;
+  onAddComment: (content: string) => void;
 }
 
 export const DocumentTable: React.FC<DocumentTableProps> = ({ 
@@ -17,7 +18,8 @@ export const DocumentTable: React.FC<DocumentTableProps> = ({
   onSelectDocument, 
   selectedId, 
   onDelete, 
-  onEdit 
+  onEdit,
+  onAddComment
 }) => {
   return (
     <div className={styles.table}>
@@ -34,6 +36,7 @@ export const DocumentTable: React.FC<DocumentTableProps> = ({
             onSelect={onSelectDocument}
             onDelete={onDelete}
             onEdit={onEdit}
+            onAddComment={onAddComment}
           />
         ))}
       </div>

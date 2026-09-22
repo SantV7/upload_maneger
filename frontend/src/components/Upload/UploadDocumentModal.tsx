@@ -14,6 +14,7 @@ interface UploadProps {
 
 export const UploadDocumentModal: React.FC<UploadProps> = ({ isOpen, onClose, onSuccess }) => {
   const [ title, setTitle ] = useState('');
+  const [ description, setDescription ] = useState('');
   const [ file, setFile ] = useState<File | null>(null);
   const [ loading, setLoading ] = useState(false);
   const [ errWarning, setErrWarning ] = useState('');
@@ -21,8 +22,18 @@ export const UploadDocumentModal: React.FC<UploadProps> = ({ isOpen, onClose, on
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!title.trim()) {
+      setErrWarning('Informe o título do documento.');
+      return;
+    }
+
     if (!file) {
-      setErrWarning('É necessário um arquivo!');
+      setErrWarning('É necessário selecionar um arquivo.');
+      return;
+    }
+
+    if (!['application/pdf', 'image/jpeg', 'image/png'].includes(file.type)) {
+      setErrWarning('Envie um arquivo PDF, JPG ou PNG.');
       return;
     }
 
@@ -31,13 +42,15 @@ export const UploadDocumentModal: React.FC<UploadProps> = ({ isOpen, onClose, on
     
     try {
       const formData = new FormData();
-      formData.append('title', title);
+      formData.append('title', title.trim());
+      formData.append('description', description.trim());
       formData.append('file', file);
 
       await api.uploadDocument(formData);
       onSuccess();
       onClose();
       setTitle('');
+      setDescription('');
       setFile(null);
     } catch (error) {
       console.error(error);
@@ -55,6 +68,13 @@ export const UploadDocumentModal: React.FC<UploadProps> = ({ isOpen, onClose, on
           value={title} 
           onChange={(e) => setTitle(e.target.value)} 
           placeholder="Nome do documento" 
+          required
+        />
+        <Input
+          label="Descrição (opcional)"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Descreva brevemente o documento"
         />
         
         <div className={`${styles.err_warning} ${errWarning ? styles.active : ''}`}>
@@ -65,6 +85,7 @@ export const UploadDocumentModal: React.FC<UploadProps> = ({ isOpen, onClose, on
         <input 
           type="file" 
           id="fileInput"
+          accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
           style={{ display: 'none' }} 
           onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
         />

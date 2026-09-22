@@ -31,3 +31,16 @@
   white-space: nowrap;
   max-width: 220px;
 }
+
+@media (max-width: 520px) {
+  .fileUploadContainer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .fileName {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}

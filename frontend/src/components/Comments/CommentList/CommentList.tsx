@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './CommentList.module.css';
-import { CommentItem } from '../CommenttItem/CommentItem';
 
 interface Comment {
   id: string;
@@ -18,7 +17,14 @@ export const CommentList: React.FC<CommentListProps> = ({ comments }) => {
       {comments.length === 0 ? (
         <p className={styles.empty}>Nenhum comentário ainda.</p>
       ) : (
-        comments.map((c) => <CommentItem key={c.id} text={c.text} createdAt={c.createdAt} />)
+        comments.map((c) => (
+          <div key={c.id} className={styles.commentItem}>
+            <p>{c.text}</p>
+            <span className={styles.date}>
+              {new Date(c.createdAt).toLocaleDateString('pt-BR')}
+            </span>
+          </div>
+        ))
       )}
     </div>
   );
